@@ -8,10 +8,9 @@
 module.exports = {
 
   attributes: {
-  	catalog_version: 'string',
-  	itemid: 'string',
-  	virtual_currency: 'string',
-  	price: 'integer'
+  	id: 'string',
+  	virtualCurrency: 'string',
+  	price: 'string'
   }
 };
 

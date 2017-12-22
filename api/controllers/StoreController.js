@@ -13,9 +13,10 @@ PlayFabAPI.settings.developerSecretKey="SRXMXQ57OKNHI5Z6OAXD546RNEK8F95E3OYZQC3R
 module.exports = {
 	getItemList: function (req,res) {
 		var values = req.allParams();
-		var request = {
+/*		var request = {
 			CatalogVersion:values.catalog_version
-		}
+		}*/
+		var request = {};
 		PlayFabClientAPI.GetCatalogItems(
 			request,
 			OnGetCatalogItemsResult
@@ -30,7 +31,9 @@ module.exports = {
 	},
 	getInventory: function (req,res) {
 		var values = req.allParams();
+		var request = {};
 		PlayFabClientAPI.GetUserInventory(
+			request,
 			OnGetUserInventoryResult
 		);
 		function OnGetUserInventoryResult(error,result) {
@@ -41,34 +44,21 @@ module.exports = {
 			}
 		}
 	},
-	consumeGoods: function (req,res) {
+	PurchaseGoods: function (req,res) {
 		var values = req.allParams();
 		var request = {
-			ItemId: values.itemid,
-			VirtualCurrency: values.virtual_currency,
+			ItemId: values.id,
+			VirtualCurrency: values.virtualCurrency,
 			Price: values.price
 		}
+		//console.log(request);
 		PlayFabClientAPI.PurchaseItem(
 			request,
 			OnPurchaseItemResult
 		);
 		function OnPurchaseItemResult(error,result) {
 			if (error==null) {
-				var request = {
-					ConsumeCount: 1,
-					ItemInstanceId: result.data.Items
-				}
-				PlayFabClientAPI.ConsumeItem(
-					request,
-					OnConsumeItemResult
-				);
-				function OnConsumeItemResult(error_consumeItem,result_consumeItem) {
-					if (error_consumeItem==null) {
-						res.send(result_consumeItem.data);
-					} else {
-						res.send("fail");
-					}
-				}
+				res.send(result.data.Items)
 			} else {
 				res.send("fail");
 			}
