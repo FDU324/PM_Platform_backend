@@ -23,7 +23,22 @@ module.exports = {
 		);
 		function OnLoginResult(error,result) {
 			console.log(result);
-			if (error==null) res.send("success");
+			if (error==null) {
+				var request = {
+					Username : values.username
+				}
+				PlayFabClientAPI.GetAccountInfo(
+					request,
+					OnGetAccountResult
+				);
+				function OnGetAccountResult(error_getAccount,result_getAccount) {
+					if (error_getAccount==null) {
+						res.send(result_getAccount.data.AccountInfo);
+					} else {
+						res.send("fail");
+					}
+				}
+			}
 			if (result==null) res.send("fail");
 		}
 	},
@@ -35,6 +50,7 @@ module.exports = {
 			Username:values.username,
 			Password:values.password,
 			RequiredBothUsernameAndEmail:true,
+			DisplayName:values.nickname,
 			Titleid:PlayFabAPI.settings.titleId
 		}
 		PlayFabClientAPI.RegisterPlayFabUser(

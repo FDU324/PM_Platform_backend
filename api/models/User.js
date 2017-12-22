@@ -11,6 +11,7 @@ module.exports = {
   	email: 'email',
   	username: 'string',
   	password: 'string',
+  	nickname: 'string',
   }
 };
 
