@@ -22,8 +22,9 @@ module.exports = {
 			OnLoginResult
 		);
 		function OnLoginResult(error,result) {
-			console.log(result);
-			if (error==null) {
+/*			console.log(result);
+*/			if (error==null) {
+				//res.send(result);
 				var request = {
 					Username : values.username
 				}
@@ -33,6 +34,49 @@ module.exports = {
 				);
 				function OnGetAccountResult(error_getAccount,result_getAccount) {
 					if (error_getAccount==null) {
+						console.log(req.session);
+						if (req.session.num==null) {
+							req.session.num=0;
+						} else {
+							req.session.num+=1;
+						}
+/*						var playerInfo = new Map();
+						playerInfo.set(values.username,result.data.SessionTicket);
+						console.log(playerInfo);
+						req.session.playerInfo = playerInfo;
+						console.log(req.session.playerInfo);
+*/						if (req.session.playerMap==null) {
+							//var playerInfo = new Map();
+							//playerInfo.set(values.username,result.data.SessionTicket);
+/*							console.log(req.session);
+*/							//req.session.playerMap = new Map();
+							req.session.playerMap = [];
+							req.session.playerMap[0]={
+								username: values.username,
+								session_ticket: result.data.SessionTicket
+							}
+/*							console.log(req.session);
+*/							//res.send(result);
+						} else {
+/*							console.log(req.session);
+							console.log("test");
+*/							var v=false;
+							for (var i=0;i<req.session.num;i++) {
+								if (req.session.playerMap[i].username==values.username) {
+									v=true;
+								}
+							}
+							if (!v) {
+								req.session.playerMap[req.session.num]={
+									username: values.username,
+									session_ticket: result.data.SessionTicket
+								}
+							} else {
+								req.session.num-=1;
+							}
+/*							console.log(req.session);
+*/						}
+
 						res.send(result_getAccount.data.AccountInfo);
 					} else {
 						res.send("fail");

@@ -31,6 +31,17 @@ module.exports = {
 	},
 	getInventory: function (req,res) {
 		var values = req.allParams();
+		console.log(req.session);
+		var sessionTicket = null;
+		//FA8795BB519212F8-0-0-8C4D-8D54B0B6CD41EF7-fwCp/INIj+DAOXHCW0RyofszYo5rH/xaw3Diee+Gfsw=
+		for (var i=0;i<=req.session.num;i++) {
+			console.log(req.session.playerMap[i].username);
+			if (req.session.playerMap[i].username==values.username) {
+				console.log(values.username);
+				sessionTicket = req.session.playerMap[i].session_ticket;
+			}	
+		}
+		PlayFabAPI._internalSettings.sessionTicket = sessionTicket;
 		var request = {};
 		PlayFabClientAPI.GetUserInventory(
 			request,
@@ -46,7 +57,16 @@ module.exports = {
 	},
 	PurchaseGoods: function (req,res) {
 		var values = req.allParams();
-		console.log(req);
+		console.log(req.session);
+		var sessionTicket = null;
+		//FA8795BB519212F8-0-0-8C4D-8D54B0B6CD41EF7-fwCp/INIj+DAOXHCW0RyofszYo5rH/xaw3Diee+Gfsw=
+		for (var i=0;i<=req.session.num;i++) {
+			console.log(i);
+			if (req.session.playerMap[i].username==values.username) {
+				sessionTicket = req.session.playerMap[i].session_ticket;
+			}	
+		}
+		PlayFabAPI._internalSettings.sessionTicket = sessionTicket;
 		var request = {
 			ItemId: values.id,
 			VirtualCurrency: values.virtualCurrency,

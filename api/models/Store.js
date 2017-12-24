@@ -10,7 +10,8 @@ module.exports = {
   attributes: {
   	id: 'string',
   	virtualCurrency: 'string',
-  	price: 'string'
+  	price: 'string',
+  	username: 'string'
   }
 };
 
