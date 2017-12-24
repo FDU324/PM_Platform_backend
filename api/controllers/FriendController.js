@@ -10,10 +10,12 @@ var PlayFabServerAPI = require("playfab-sdk/Scripts/PlayFab/PlayFabServer");
 PlayFabAPI.settings.developerSecretKey="SRXMXQ57OKNHI5Z6OAXD546RNEK8F95E3OYZQC3RWWS8GM7MFD";
 
 module.exports = {
+	sendRequest: function(req,res) {
+	},
 	getFriendList: function (req,res) {
 		var values = req.allParams();
 		var request = {
-			Username : values.username
+			Username : values.myUsername
 			//PlayFabId:values.playfabid
 		}
 		PlayFabClientAPI.GetAccountInfo(
@@ -48,7 +50,7 @@ module.exports = {
 	addFriend: function(req,res) {
 		var values=req.allParams();
 		var request = {
-			Username : values.username			
+			Username : values.myUsername			
 		}
 		PlayFabClientAPI.GetAccountInfo(
 			request,
@@ -60,7 +62,7 @@ module.exports = {
 				var user_PlayFabId = result.data.AccountInfo.PlayFabId;
 				var request = {
 					PlayFabId : user_PlayFabId,
-					FriendUsername : values.friend_username
+					FriendUsername : values.friendUsername
 				}
 				PlayFabServerAPI.AddFriend(
 					request,
@@ -83,7 +85,7 @@ module.exports = {
 	removeFriend: function(req,res) {
 		var values = req.allParams();
 		var request = {
-			Username : values.username
+			Username : values.myUsername
 			//PlayFabId:values.playfabid
 		}
 		PlayFabClientAPI.GetAccountInfo(
@@ -105,7 +107,7 @@ module.exports = {
 					if (error_getFriendList==null) {
 						result_getFriendList.data.Friends.forEach(function(o){
 							console.log(o.FriendPlayFabId);
-							if (o.Username==values.friend_username) {
+							if (o.Username==values.friendUsername) {
 								var request={
 									PlayFabId : user_PlayFabId,
 									FriendPlayFabId : o.FriendPlayFabId

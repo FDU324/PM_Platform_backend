@@ -6,10 +6,12 @@
  */
 
 module.exports = {
+  connection : 'localMysql',
+  tableName : 'friendApplication',
 
   attributes: {
-  	username: 'string',
-  	friend_username: 'string'
+  	myUsername: 'string',
+  	friendUsername: 'string'
   }
 };
 

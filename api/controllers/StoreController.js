@@ -46,6 +46,7 @@ module.exports = {
 	},
 	PurchaseGoods: function (req,res) {
 		var values = req.allParams();
+		console.log(req);
 		var request = {
 			ItemId: values.id,
 			VirtualCurrency: values.virtualCurrency,

@@ -59,8 +59,12 @@ module.exports = {
 		);
 		function OnRegisterResult(error,result) {
 			console.log(result);
-			if (error==null) res.send("success");
-			if (result==null) res.send("fail");
+			if (error==null) {
+				res.send("success");
+			} else {
+				res.send("fail");
+			}
+			
 		}
 	}
 
