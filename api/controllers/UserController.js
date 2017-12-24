@@ -59,7 +59,25 @@ module.exports = {
 		);
 		function OnRegisterResult(error,result) {
 			console.log(result);
+			console.log(error);
 			if (error==null) {
+				var request = {
+					ItemId: 'NormalCannon',
+					VirtualCurrency: 'JB',
+					Price: 0
+				}
+				//console.log(request);
+				PlayFabClientAPI.PurchaseItem(
+					request,
+					OnPurchaseItemResult
+				);
+				function OnPurchaseItemResult(error_purchase,result_purchase) {
+					if (error_purchase==null) {
+						console.log(result_purchase.data.Items)
+					} else {
+						console.log("fail");
+					}
+				}
 				res.send("success");
 			} else {
 				res.send("fail");

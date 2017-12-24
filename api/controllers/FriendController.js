@@ -11,6 +11,16 @@ PlayFabAPI.settings.developerSecretKey="SRXMXQ57OKNHI5Z6OAXD546RNEK8F95E3OYZQC3R
 
 module.exports = {
 	sendRequest: function(req,res) {
+
+	},
+	acceptRequest: function(req,res) {
+		var values = req.allParams();
+		Friend.find({
+			friendUsername:values.friendUsername
+		}).exec(function (err,result) {
+
+		});
+		io.socket.on('');
 	},
 	getFriendList: function (req,res) {
 		var values = req.allParams();
