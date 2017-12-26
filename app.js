@@ -55,6 +55,64 @@ try {
   }
 }
 
-
 // Start server
 sails.lift(rc('sails'));
+
+var io = require('socket.io').listen(8081);
+
+
+// usernames which are currently connected to the chat
+var usernames = {};
+
+io.sockets.on('connection', function (socket) {
+
+  socket.on('test',function(data) {
+    console.log(data);
+  });
+  socket.on('login',function(data) {
+    console.log(data.username);
+    //console.log(sails.models.friend);
+/*            sails.models.friend.find({
+                  friendUsername:'billy191',
+                  read:0
+              }).exec(function (error_receiveMsg,reqMsg) {
+                console.log(error_receiveMsg);
+                  if (error_receiveMsg==null) {
+                    reqMsg.forEach(function(o) {
+                        var request = {
+                          Username : o.myUsername
+                        }
+                        PlayFabClientAPI.GetAccountInfo(
+                          request,
+                          OnGetAccountResult
+                        );
+                        function OnGetAccountResult(error,result) {
+                          console.log(result.data.AccountInfo);
+                          if (error==null) {
+                              var user = {
+                                username: result.data.AccountInfo.Username,
+                                email: result.data.AccountInfo.PrivateInfo.Email,
+                                nickname: result.data.AccountInfo.DisplayName
+                              };
+                              console.log(user);
+                              sails.sockets.broadcast('acceptFriendReq',JSON.stringify(user));
+                          }
+                        }
+                    });
+      
+                  }
+              });
+*/    
+  
+  });
+
+  // when the user disconnects.. perform this
+  socket.on('disconnect', function(){
+    // remove the username from global usernames list
+    delete usernames[socket.username];
+    // update list of users in chat, client-side
+    io.sockets.emit('updateusers', usernames);
+    // echo globally that this client has left
+    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+  });
+});

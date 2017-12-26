@@ -45,7 +45,7 @@ module.exports.connections = {
     host: 'localhost',
     user: 'root', //optional
     password: 'Tongshang1', //optional
-    //port: 3306,
+    port: 3306,
     database: 'fdgame' //optional
   },
 

@@ -8,7 +8,54 @@ var PlayFabAPI = require("playfab-sdk/Scripts/PlayFab/PlayFab");
 var PlayFabClientAPI = require("playfab-sdk/Scripts/PlayFab/PlayFabClient");
 PlayFabAPI.settings.developerSecretKey="SRXMXQ57OKNHI5Z6OAXD546RNEK8F95E3OYZQC3RWWS8GM7MFD";
 PlayFabAPI.settings.titleId="8C4D";
+//var sails = require("sails");
+//var io = require('socket.io')();
+/*io.on('confirmConnect',(data,func) => {
+	func({
+		success:true,
+		data: 'success'
+	});
+});
+*/
 
+//console.log(sails.sockets);
+/*sails.on('login',function (data) {
+  console.log(data.username);
+  Friend.find({
+    friendUsername:data.username,
+    read:0
+  }).exec(function (error_receiveMsg,reqMsg) {
+    if (error_receiveMsg==null) {
+      reqMsg.forEach(function(o) {
+        var request = {
+          Username : o.myUsername
+        }
+        PlayFabClientAPI.GetAccountInfo(
+          request,
+          OnGetAccountResult
+        );
+        function OnGetAccountResult(error,result) {
+          if (error==null) {
+            var user = {
+              username: data.username,
+              email: result.data.AccountInfo.PrivateInfo.Email,
+              nickname: result.data.AccountInfo.DisplayName
+            };
+            sails.sockets.broadcast('test',{name:'test'});
+            sails.sockets.broadcast('acceptFriendReq',JSON.stringify(user));
+          }
+        }
+      });
+      
+    }
+  });
+});
+*/sails.on('confirmConnect',function(data,func) {
+	func({
+		success: true,
+		data: 'success'
+	});
+});
 module.exports = {
 	login: function (req,res) {
 		var values=req.allParams();
@@ -76,7 +123,16 @@ module.exports = {
 							}
 /*							console.log(req.session);
 */						}
-
+			/*			console.log(sails.io.sockets.on);
+						sails.sockets.broadcast('test',{username:'billy191'});
+						sails.io.sockets.on('test', function (data) {
+							console.log(data);
+						});
+						console.log(sails.io.sockets.on('test',function(data){}));
+			*/			//io.broadcast('login',{username:'billy191'});
+						//console.log(io);
+						//console.log(sails.sockets);
+						sails.sockets.broadcast('test',{username:'billy191'});
 						res.send(result_getAccount.data.AccountInfo);
 					} else {
 						res.send("fail");
@@ -110,7 +166,6 @@ module.exports = {
 					VirtualCurrency: 'JB',
 					Price: 0
 				}
-				//console.log(request);
 				PlayFabClientAPI.PurchaseItem(
 					request,
 					OnPurchaseItemResult
