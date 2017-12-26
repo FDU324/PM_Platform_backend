@@ -12,7 +12,7 @@ var image = require("imageinfo");
 var fs = require("fs");
 
 module.exports = {
-	getReport: function (req,res) {
+	getMoments: function (req,res) {
 		var values = req.allParams();
 		var request = {
 			Username : values.username
