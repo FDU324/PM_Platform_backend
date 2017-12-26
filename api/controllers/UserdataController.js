@@ -98,7 +98,7 @@ module.exports = {
 						if (temp_splitUrl[1]==username) {
 							var userRes = {
 								username: username,
-								//email: result.PrivateInfo.Email,
+								email: '',
 								nickname: displayname
 							}
 							var output = {
