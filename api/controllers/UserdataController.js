@@ -29,6 +29,9 @@ module.exports = {
 	},
 	getMoments: function (req,res) {
 		list=[];
+		list1=[];
+		list2=[];
+		list3=[];
 		tag=0;
 		var values = req.allParams();
 		var request = {
@@ -43,6 +46,42 @@ module.exports = {
 			var max=0;
 			if (error==null) {
 				var user_PlayFabId = result.data.AccountInfo.PlayFabId;
+				var request = {
+					PlayFabId : user_PlayFabId	
+				}
+				PlayFabServerAPI.GetFriendsList(
+					request,
+					OnGetFriendListResult
+				);
+				function OnGetFriendListResult(error_friendList,result_friendList) {
+					if (error_friendList==null) {
+						//console.log(result_friendList.data.Friends);
+						result_friendList.data.Friends.forEach(function(p) {
+							Userdata.find({
+								username: p.Username
+							}).exec(function (err_list,result_list) {
+								//console.log(tag);
+								console.log(p);
+								if (err_list==null) {
+									result_list.forEach(function (q) {
+										list.push(process(p.Username,p.TitleDisplayName,q.image,q.time));
+									})
+									//console.log(list);
+									//console.log('1');
+									//list2=list
+								} else {
+									res.send('fail');
+								}
+							});
+						});
+						//console.log(list);
+						//console.log('2');
+						//res.json(list);
+						//list3=list;	
+					} else {
+						res.send('fail');					
+					}
+				}				
 				var request = {
 					PlayFabId : user_PlayFabId
 				}
@@ -61,50 +100,19 @@ module.exports = {
 									list.push(process(values.username,result.data.AccountInfo.TitleInfo.DisplayName,o.image,o.time));
 								});
 								//console.log(tag);
-								
+								console.log(list);
+								res.json(list);
 							} else {
 								res.send('fail');
 							}
 						});
-						var request = {
-							PlayFabId : user_PlayFabId	
-						}
-						PlayFabServerAPI.GetFriendsList(
-							request,
-							OnGetFriendListResult
-						);
-						function OnGetFriendListResult(error_friendList,result_friendList) {
-							if (error_friendList==null) {
-								//console.log(result_friendList.data.Friends);
-								result_friendList.data.Friends.forEach(function(p) {
-									Userdata.find({
-										username: p.Username
-									}).exec(function (err_list,result_list) {
-										//console.log(tag);
-										console.log(p);
-										if (err_list==null) {
-											result_list.forEach(function (q) {
-												list.push(process(p.Username,p.TitleDisplayName,q.image,q.time));
-											})
-											//console.log(list);
-											//console.log('1');
-										} else {
-											res.send('fail');
-										}
-									});
-								});
-								//console.log(list);
-								//console.log('2');
-								//res.json(list);	
-							} else {
-								res.send('fail');					
-							}
-						}
 					} else {
 						res.send('fail');
 					}
 				}
-				function process(username,displayname,imag,time) {
+
+
+				function process(username,displayname,image,time) {
 					console.log(username);
 					console.log(tag);
 					var userRes = {
@@ -122,7 +130,6 @@ module.exports = {
 					return output
 				}
 			}
-			res.json(list);
 		}
 	}
 };
