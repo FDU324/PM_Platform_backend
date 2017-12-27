@@ -11,7 +11,10 @@ PlayFabAPI.settings.developerSecretKey="SRXMXQ57OKNHI5Z6OAXD546RNEK8F95E3OYZQC3R
 
 module.exports = {
 	sendRequest: function(req,res) {
+		var values = req.allParams();
+		var request = {
 
+		}
 	},
 	acceptRequest: function(req,res) {
 		var values = req.allParams();
@@ -20,7 +23,6 @@ module.exports = {
 		}).exec(function (err,result) {
 			
 		});
-		io.socket.on('');
 	},
 	getFriendList: function (req,res) {
 		var values = req.allParams();
@@ -35,6 +37,7 @@ module.exports = {
 		function OnGetAccountResult(error,result) {
 			if (error==null) {
 				//res.send(result.data);
+				//console.log(result);
 				var user_PlayFabId = result.data.AccountInfo.PlayFabId;
 				var request = {
 					PlayFabId : user_PlayFabId

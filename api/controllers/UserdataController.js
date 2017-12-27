@@ -21,6 +21,7 @@ module.exports = {
 			time: values.time
 		}).exec(function (err, records) {
 			if (err==null) {
+				//sails.sockets.emit('moments','');
 				res.send('success');
 			} else {
 				res.send('fail');
@@ -97,6 +98,7 @@ module.exports = {
 						}).exec(function(err_user,result_user) {
 							if (err_user==null) {
 								result_user.forEach(function(o) {
+									console.log(result.data);
 									list.push(process(values.username,result.data.AccountInfo.TitleInfo.DisplayName,o.image,o.time));
 								});
 								//console.log(tag);

@@ -58,18 +58,3 @@ try {
 // Start server
 sails.lift(rc('sails'));
 
-/*var Server = require('socket.io');
-var io = new Server();
-io.listen(8081);
-*/
-/*const Server = require('socket.io');
-const io = new Server();
-io.listen(8081);*/
-// usernames which are currently connected to the chat
-
-
-//var io = require('socket.io').listen(8081);
-/*Friend.find().exec(function(err,res){
-
-});
-*/

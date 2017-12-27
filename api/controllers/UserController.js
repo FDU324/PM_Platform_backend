@@ -142,14 +142,14 @@ module.exports = {
 						//console.log(sails.sockets);
 						//sails.sockets.broadcast('test',{username:'billy191'});
 						//io.listen(8081);
-						sails.sockets.emit('test','test');
-						sails.io.on('connect',function(socket) {
+/*						sails.sockets.emit('test','test');
+						sails.io.on('test',function(data) {
 							console.log('test');
-							socket.on('test',function(data) {
-								console.log('test');
-							})
-						})
-						console.log(sails.io.on);
+						});
+						//var io=require('socket.io').listen(8081);
+						console.log(sails.io.sockets._events);
+*/						//sails.sockets.emit('test','test');
+						
 						res.send(result_getAccount.data.AccountInfo);
 					} else {
 						res.send("fail");
@@ -200,7 +200,8 @@ module.exports = {
 			}
 			
 		}
-	},
+	}
+	/*,
 	  test: function (req,res) {
 	  		var data=req.allParams().data;
                       Friend.find({ 
@@ -237,8 +238,19 @@ module.exports = {
                             }
                           });
   }
-
+*/
 
 
 };
-
+//var io = require('sails.io.js')(require('socket.io-client'));
+/*sails.io.on('test',function (data) {
+	console.log(data);
+});
+*/
+/*var io = require('sails.io.js');
+sails.sockets.emit('test','test');
+sails.io.on('test',function(data) {
+	console.log('test');
+});
+//var io=require('socket.io').listen(8081);
+console.log(sails.io.sockets._events);*/
