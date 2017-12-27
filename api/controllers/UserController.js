@@ -8,6 +8,63 @@ var PlayFabAPI = require("playfab-sdk/Scripts/PlayFab/PlayFab");
 var PlayFabClientAPI = require("playfab-sdk/Scripts/PlayFab/PlayFabClient");
 PlayFabAPI.settings.developerSecretKey="SRXMXQ57OKNHI5Z6OAXD546RNEK8F95E3OYZQC3RWWS8GM7MFD";
 PlayFabAPI.settings.titleId="8C4D";
+var io = require('socket.io').listen(8081);
+io.sockets.on('connection', function (socket) {
+
+  socket.on('test',function(data) {
+    console.log(data);
+  });
+  socket.on('login',function(data) {
+    console.log(data.username);
+    //console.log(sails.models.friend);
+            //var Friend = require ('../models/Friend')
+    
+/*            Friend.find({
+                  friendUsername:'billy191',
+                  read:0
+              }).exec(function (error_receiveMsg,reqMsg) {
+                console.log(error_receiveMsg);
+                console.log('test');
+                  if (error_receiveMsg==null) {
+                    reqMsg.forEach(function(o) {
+                        var request = {
+                          Username : o.myUsername
+                        }
+                        PlayFabClientAPI.GetAccountInfo(
+                          request,
+                          OnGetAccountResult
+                        );
+                        function OnGetAccountResult(error,result) {
+                          console.log(result.data.AccountInfo);
+                          if (error==null) {
+                              var user = {
+                                username: result.data.AccountInfo.Username,
+                                email: result.data.AccountInfo.PrivateInfo.Email,
+                                nickname: result.data.AccountInfo.DisplayName
+                              };
+                              console.log(user);
+                              sails.sockets.broadcast('acceptFriendReq',JSON.stringify(user));
+                          }
+                        }
+                    });
+      
+                  }
+              });*/
+  
+  });
+
+  // when the user disconnects.. perform this
+  socket.on('disconnect', function(){
+    // remove the username from global usernames list
+    delete usernames[socket.username];
+    // update list of users in chat, client-side
+    io.sockets.emit('updateusers', usernames);
+    // echo globally that this client has left
+    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+  });
+});
+
+
 //var sails = require("sails");
 //var io = require('socket.io')();
 /*io.on('confirmConnect',(data,func) => {
@@ -102,6 +159,7 @@ module.exports = {
 								username: values.username,
 								session_ticket: result.data.SessionTicket
 							}
+							//console.log(result.data);
 /*							console.log(req.session);
 */							//res.send(result);
 						} else {
@@ -132,7 +190,7 @@ module.exports = {
 			*/			//io.broadcast('login',{username:'billy191'});
 						//console.log(io);
 						//console.log(sails.sockets);
-						sails.sockets.broadcast('test',{username:'billy191'});
+						//sails.sockets.broadcast('test',{username:'billy191'});
 						res.send(result_getAccount.data.AccountInfo);
 					} else {
 						res.send("fail");

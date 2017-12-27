@@ -18,7 +18,7 @@ module.exports = {
 		Friend.find({
 			friendUsername:values.friendUsername
 		}).exec(function (err,result) {
-
+			
 		});
 		io.socket.on('');
 	},

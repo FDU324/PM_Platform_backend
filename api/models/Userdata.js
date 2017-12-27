@@ -20,7 +20,8 @@ module.exports = {
       type: 'integer',
       primaryKey: true,
       autoIncrement: true
-    }
+    },
+    time: 'timestamp'
   }
 };
 

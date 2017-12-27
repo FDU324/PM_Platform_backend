@@ -17,7 +17,7 @@ module.exports = {
 			CatalogVersion:values.catalog_version
 		}*/
 		var request = {};
-		PlayFabClientAPI.GetCatalogItems(
+		PlayFabServerAPI.GetCatalogItems(
 			request,
 			OnGetCatalogItemsResult
 		);
