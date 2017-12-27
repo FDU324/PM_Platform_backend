@@ -21,7 +21,7 @@ module.exports = {
       primaryKey: true,
       autoIncrement: true
     },
-    time: 'timestamp'
+    time: 'string'
   }
 };
 
