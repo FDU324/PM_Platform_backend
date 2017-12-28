@@ -7,7 +7,7 @@
 var PlayFabAPI = require("playfab-sdk/Scripts/PlayFab/PlayFab");
 var PlayFabClientAPI = require("playfab-sdk/Scripts/PlayFab/PlayFabClient");
 var PlayFabServerAPI = require("playfab-sdk/Scripts/PlayFab/PlayFabServer");
-PlayFabAPI.settings.developerSecretKey = "SRXMXQ57OKNHI5Z6OAXD546RNEK8F95E3OYZQC3RWWS8GM7MFD";
+PlayFabAPI.settings.developerSecretKey="SRXMXQ57OKNHI5Z6OAXD546RNEK8F95E3OYZQC3RWWS8GM7MFD";
 
 var socketServer = require("../socket/socketServer");
 
@@ -110,10 +110,25 @@ module.exports = {
 										friendNickname : result.data.AccountInfo.TitleInfo.DisplayName,
 										//friendEmail : result.data.AccountInfo.PrivateInfo.Email
 									}
-									console.log(requestUser);
-									console.log(socketServer.onlineUserTable[values.friendUsername])
-									socketServer.onlineUserTable[values.friendUsername].emit('newFriend', JSON.stringify(requestUser));
-									res.json(friendInfo);
+									var request = {
+										PlayFabId : result.data.AccountInfo.PlayFabId,
+										FriendUsername : values.myUsername
+									}
+									PlayFabServerAPI.AddFriend(
+										request,
+										OnAddFriendResult
+									);
+									function OnAddFriendResult(error_addFriend,result_addFriend) {
+										if (error_addFriend==null) {
+											socketServer.onlineUserTable[values.friendUsername].emit('newFriend', JSON.stringify(requestUser));
+											res.json(friendInfo);
+										}
+										else {
+											res.send("fail");
+										}
+									}
+									// socketServer.onlineUserTable[values.friendUsername].emit('newFriend', JSON.stringify(requestUser));
+									// res.json(friendInfo);
 								}else {
 									res.send("fail");
 								}

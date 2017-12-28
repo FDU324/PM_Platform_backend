@@ -201,56 +201,6 @@ module.exports = {
 			
 		}
 	}
-	/*,
-	  test: function (req,res) {
-	  		var data=req.allParams().data;
-                      Friend.find({ 
-                            friendUsername:data,
-                            read:0
-                        }).exec(function (error_receiveMsg,reqMsg) {
-                          console.log(reqMsg);
-                          console.log('test');
-                          if (error_receiveMsg==null) {
-                              reqMsg.forEach(function(o) {
-                                    var request = {
-                                    Username : o.myUsername
-                                  }
-                                  PlayFabClientAPI.GetAccountInfo(
-                                      request,
-                                      OnGetAccountResult
-                                  );
-                                  function OnGetAccountResult(error_Acc,result_Acc) {
-                                    console.log(result_Acc.data.AccountInfo);
-                                    //console.log(result_Acc.data.AccountInfo.PrivateInfo);
-                                    console.log(result_Acc.data.AccountInfo.TitleInfo);
-                                      if (error==null) {
-                                          var user = {
-                                            username: result_Acc.data.AccountInfo.Username,
-                                            email: '',//result_Acc.data.AccountInfo.PrivateInfo.Email,
-                                            nickname: result_Acc.data.AccountInfo.TitleInfo.DisplayName
-                                          };
-                                          console.log(user);
-                                        sails.sockets.broadcast('acceptFriendReq',JSON.stringify(user));
-                                      }
-                                  }
-                              });
-      
-                            }
-                          });
-  }
-*/
 
 
 };
-//var io = require('sails.io.js')(require('socket.io-client'));
-/*sails.io.on('test',function (data) {
-	console.log(data);
-});
-*/
-/*var io = require('sails.io.js');
-sails.sockets.emit('test','test');
-sails.io.on('test',function(data) {
-	console.log('test');
-});
-//var io=require('socket.io').listen(8081);
-console.log(sails.io.sockets._events);*/
