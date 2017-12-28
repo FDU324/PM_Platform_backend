@@ -83,7 +83,25 @@ module.exports = {
 				);
 				function OnAddFriendResult(error_addFriend,result_addFriend) {
 					if (error_addFriend==null) {
-						res.send("success");
+						var request = {
+							Username : values.friendUsername			
+						}
+						PlayFabClientAPI.GetAccountInfo(
+							request,
+							OnGetAccountResult
+						);
+						function OnGetAccountResult(error, result) {
+							if (error==null) {
+								var friendInfo = {
+									friendUsername : values.friendUsername,
+									friendNickname : result.data.AccountInfo.TitleInfo.DisplayName,
+									//friendEmail : result.data.AccountInfo.PrivateInfo.Email
+								}
+								res.json(friendInfo);
+							}else {
+								res.send("fail");
+							}
+						}
 					} else {
 						res.send("fail");
 					}

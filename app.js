@@ -55,6 +55,23 @@ try {
   }
 }
 
-// Start server
-sails.lift(rc('sails'));
+sails.lift(rc('sails'), function() {
+  require("./socketServer")(sails.hooks.http.server);
+})
+
+// var async = require('async');
+// // Start server
+// async.series([
+//   function() {
+    
+//   }
+
+// ], function sailsReady(err, async_data) { //TODO: unused variable async_data
+//   if (err) {
+//     console.log(err);
+//   }
+// });
+
+
+// require("./socketServer")(sails.hooks.http.server);
 
