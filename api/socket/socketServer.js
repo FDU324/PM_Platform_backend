@@ -1,9 +1,9 @@
+var onlineUserTable = {}
+
 
 
 module.exports = function(httpServer) {
     let io = require('socket.io')(httpServer);
-
-    let currentUsers = {}
 
     io.sockets.on('connection', (socket) => {
         console.log('a user connected: ' + socket.id);
@@ -20,11 +20,11 @@ module.exports = function(httpServer) {
         /*  登录  */
         socket.on('login', (username, func) => {
             /*  用户顶替  */
-            if (currentUsers[username]!=null) {
-                currentUsers[username].emit('logout');
+            if (onlineUserTable[username]!=null) {
+                onlineUserTable[username].emit('logout');
             }
             
-            currentUsers[username] = socket;
+            onlineUserTable[username] = socket;
             func({
                 success: true,
                 data: 'success'
@@ -146,18 +146,18 @@ module.exports = function(httpServer) {
         // 前台断开socket连接
         socket.on('disconnect', () => {
             let username;
-            for (let [k, v] of Object.entries(currentUsers)) {
+            for (let [k, v] of Object.entries(onlineUserTable)) {
                 if (v === socket) {
                     username = k;
                 }
             }
-            currentUsers[username] = null;
+            onlineUserTable[username] = null;
             console.log(username+' disconnected');
         });
 
         // 登出
         socket.on('logout', (username, func) => {
-            currentUsers[username] = null;
+            onlineUserTable[username] = null;
             func({
                 success: true,
                 data: 'success'
@@ -169,12 +169,12 @@ module.exports = function(httpServer) {
         socket.on('friendReq', (data, func) => {
             let username = JSON.parse(data);
             console.log(username.friendUsername);
-            if (currentUsers[username.friendUsername]) {
+            if (onlineUserTable[username.friendUsername]) {
                 User.findOne({
                     where: {username: username.myUsername},
                     attributes: ['username', 'nickname', ['userImage', 'userimage'], 'location']
                 }).then((user) => {
-                    currentUsers[username.friendUsername].emit('receiveFriendReq', JSON.stringify(user));
+                    onlineUserTable[username.friendUsername].emit('receiveFriendReq', JSON.stringify(user));
                 }).catch((err) => {
                     console.log('err:', err);
                 });
@@ -213,8 +213,8 @@ module.exports = function(httpServer) {
                     where: {username: username.myUsername},
                     attributes: ['username', 'nickname', ['userImage', 'userimage'], 'location']
                 }).then((user) => {
-                    if (currentUsers[username.friendUsername]) {
-                        currentUsers[username.friendUsername].emit('friendReqAssent', JSON.stringify(user));
+                    if (onlineUserTable[username.friendUsername]) {
+                        onlineUserTable[username.friendUsername].emit('friendReqAssent', JSON.stringify(user));
                     } else {
                         /*  离线处理  */
                         TemMessage.create({
@@ -267,14 +267,14 @@ module.exports = function(httpServer) {
             console.log("message:\n"+data);
             let jsonData = JSON.parse(data);
 
-            if(currentUsers[jsonData.to] == null) {
+            if(onlineUserTable[jsonData.to] == null) {
                 func({
                     success: false,
                     data: '好友未在线'
                 });
             }
             else {
-                currentUsers[jsonData.to].emit('newMessage', data);
+                onlineUserTable[jsonData.to].emit('newMessage', data);
                 func({
                     success: true,
                     data: 'success'
@@ -285,4 +285,6 @@ module.exports = function(httpServer) {
     });
 
 }
+
+module.exports.onlineUserTable = onlineUserTable;
     
