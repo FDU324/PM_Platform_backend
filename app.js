@@ -57,8 +57,11 @@ try {
 
 var socketServer = require("./api/socket/socketServer")
 
-sails.lift(rc('sails'), function() {
-  socketServer(sails.hooks.http.server);
+sails.lift(rc('sails'), function () {
+
+  const server = require('http').createServer();
+  socketServer(server);
+  server.listen(8790);
 })
 
 

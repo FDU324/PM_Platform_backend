@@ -23,7 +23,7 @@ module.exports = {
 		Friend.find({
 			friendUsername:values.friendUsername
 		}).exec(function (err,result) {
-			
+
 		});
 	},
 	getFriendList: function (req,res) {
@@ -63,20 +63,20 @@ module.exports = {
 		}
 	},
 	addFriend: function(req,res) {
-		
+
 		var values=req.allParams();
 		if(socketServer.onlineUserTable[values.friendUsername] == null) {
 			res.send("offline");
 		}
 		else {
 			var request = {
-				Username : values.myUsername			
+				Username : values.myUsername
 			}
 			PlayFabClientAPI.GetAccountInfo(
 				request,
 				OnGetAccountResult
 			);
-			
+
 			function OnGetAccountResult(error,result) {
 				if (error==null) {
 					//res.send(result.data);
@@ -97,7 +97,7 @@ module.exports = {
 					function OnAddFriendResult(error_addFriend,result_addFriend) {
 						if (error_addFriend==null) {
 							var request = {
-								Username : values.friendUsername			
+								Username : values.friendUsername
 							}
 							PlayFabClientAPI.GetAccountInfo(
 								request,
@@ -201,6 +201,6 @@ module.exports = {
 				res.send("fail");
 			}
 		}
-	}	
+	}
 };
 

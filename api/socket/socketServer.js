@@ -1,9 +1,9 @@
 var onlineUserTable = {}
 
-
-
-module.exports = function(httpServer) {
-    let io = require('socket.io')(httpServer);
+module.exports = function (httpServer) {
+    var io = require('socket.io')(httpServer, {
+        transports: ['polling', 'websocket']
+    });
 
     io.sockets.on('connection', (socket) => {
         console.log('a user connected: ' + socket.id);
